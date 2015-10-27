@@ -1,8 +1,8 @@
 #                            -*- mode: org; -*-
 #
-#+TITLE:                README for OpenFOAM-dev
+#+TITLE:                README for OpenFOAM-3.0.0
 #+AUTHOR:               The OpenFOAM Foundation
-#+DATE:                     9th March 2015
+#+DATE:                     27th October 2015
 #+LINK:                  http://www.openfoam.org
 #+OPTIONS: author:nil ^:{}
 # Copyright (c) 2015 OpenFOAM Foundation.
