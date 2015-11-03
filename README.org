@@ -2,7 +2,7 @@
 #
 #+TITLE:                README for OpenFOAM-3.0.0
 #+AUTHOR:               The OpenFOAM Foundation
-#+DATE:                     27th October 2015
+#+DATE:                     3rd November 2015
 #+LINK:                  http://www.openfoam.org
 #+OPTIONS: author:nil ^:{}
 # Copyright (c) 2015 OpenFOAM Foundation.
@@ -25,6 +25,5 @@
 
 * [[http://www.OpenFOAM.org/git.php][Download and installation instructions]]
 * [[http://www.OpenFOAM.org/docs][Documentation]]
-* [[http://OpenFOAM.github.io/Documentation-dev/html][Source code documentation]]
 * [[http://www.OpenFOAM.org/bugs][Reporting bugs in OpenFOAM]]
 * [[http://www.openfoam.org/contact][Contacting the OpenFOAM Foundation]]
