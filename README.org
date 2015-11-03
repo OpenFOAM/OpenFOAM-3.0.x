@@ -1,6 +1,6 @@
 #                            -*- mode: org; -*-
 #
-#+TITLE:                README for OpenFOAM-3.0.0
+#+TITLE:                README for OpenFOAM-3.0.x
 #+AUTHOR:               The OpenFOAM Foundation
 #+DATE:                     3rd November 2015
 #+LINK:                  http://www.openfoam.org

@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  3.0.0                                 |
+|  \\    /   O peration     | Version:  3.0.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -11,7 +11,7 @@ Date   : Jan 16 2013
 Time   : 15:39:43
 Host   : "dm"
 PID    : 4485
-Case   : /home/dm2/henry/OpenFOAM/OpenFOAM-3.0.0/applications/utilities/thermophysical/adiabaticFlameT
+Case   : /home/dm2/henry/OpenFOAM/OpenFOAM-3.0.x/applications/utilities/thermophysical/adiabaticFlameT
 nProcs : 1
 sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
 SetNaN : Initialising allocated memory to NaN (FOAM_SETNAN).
