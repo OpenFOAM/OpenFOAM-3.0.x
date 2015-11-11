@@ -218,65 +218,87 @@ extern messageStream Info;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // Convenience macros to add the file name and line number to the function name
 
-/**
- * \def SeriousErrorIn(functionName)
- * Report an error message using Foam::SeriousError for functionName in
- * file __FILE__ at line __LINE__
-*/
-#define SeriousErrorIn(fn)                                                    \
-    ::Foam::SeriousError((fn), __FILE__, __LINE__)
+// Compiler provided function name string:
+//     for gcc-compatible compilers use __PRETTY_FUNCTION__
+//     otherwise use the standard __func__
+#ifdef __GNUC__
+    #define FUNCTION_NAME __PRETTY_FUNCTION__
+#else
+    #define FUNCTION_NAME __func__
+#endif
 
-/**
- * \def SeriousIOErrorIn(functionName, ios)
- * Report an IO error message using Foam::SeriousError for functionName in
- * file __FILE__ at line __LINE__
- * for a particular IOstream
-*/
-#define SeriousIOErrorIn(fn, ios)                                             \
-    ::Foam::SeriousError((fn), __FILE__, __LINE__, ios)
 
-/**
- * \def WarningIn(functionName)
- * Report a warning using Foam::Warning for functionName in
- * file __FILE__ at line __LINE__
-*/
-#define WarningIn(fn)                                                         \
-    ::Foam::Warning((fn), __FILE__, __LINE__)
+//- Report an error message using Foam::SeriousError
+//  for functionName in file __FILE__ at line __LINE__
+#define SeriousErrorIn(functionName)                                           \
+    ::Foam::SeriousError((functionName), __FILE__, __LINE__)
 
-/**
- * \def IOWarningIn(functionName, ios)
- * Report an IO warning using Foam::Warning for functionName in
- * file __FILE__ at line __LINE__
- * for a particular IOstream
-*/
-#define IOWarningIn(fn, ios)                                                  \
-    ::Foam::Warning((fn), __FILE__, __LINE__, (ios))
+//- Report an error message using Foam::SeriousError
+//  for FUNCTION_NAME in file __FILE__ at line __LINE__
+#define SeriousErrorInFunction SeriousErrorIn(FUNCTION_NAME)
 
-/**
- * \def InfoIn(functionName)
- * Report a information message using Foam::Info for functionName in
- * file __FILE__ at line __LINE__
-*/
-#define InfoIn(fn)                                                            \
-    ::Foam::Info((fn), __FILE__, __LINE__)
 
-/**
- * \def IOInfoIn(functionName, ios)
- * Report an IO information message using Foam::Info for functionName in
- * file __FILE__ at line __LINE__
- * for a particular IOstream
-*/
-#define IOInfoIn(fn, ios)                                                     \
-    ::Foam::Info((fn), __FILE__, __LINE__, (ios))
+//- Report an IO error message using Foam::SeriousError
+//  for functionName in file __FILE__ at line __LINE__
+//  for a particular IOstream
+#define SeriousIOErrorIn(functionName, ios)                                    \
+    ::Foam::SeriousError((functionName), __FILE__, __LINE__, ios)
 
-/**
- * \def Debug(variable)
- * Report a variable name and value using Foam::Pout in
- * file __FILE__ at line __LINE__
-*/
-#define Debug(var)                                                            \
-    ::Foam::Pout<< "["<< __FILE__ << ":" << __LINE__ << "] "                  \
-        << #var " = " << var << ::Foam::endl
+//- Report an IO error message using Foam::SeriousError
+//  for FUNCTION_NAME in file __FILE__ at line __LINE__
+//  for a particular IOstream
+#define SeriousIOErrorInFunction(ios) SeriousIOErrorIn(FUNCTION_NAME, ios)
+
+
+//- Report a warning using Foam::Warning
+//  for functionName in file __FILE__ at line __LINE__
+#define WarningIn(functionName)                                                \
+    ::Foam::Warning((functionName), __FILE__, __LINE__)
+
+//- Report a warning using Foam::Warning
+//  for FUNCTION_NAME in file __FILE__ at line __LINE__
+#define WarningInFunction WarningIn(FUNCTION_NAME)
+
+
+//- Report an IO warning using Foam::Warning
+//  for functionName in file __FILE__ at line __LINE__
+//  for a particular IOstream
+#define IOWarningIn(functionName, ios)                                         \
+    ::Foam::Warning((functionName), __FILE__, __LINE__, (ios))
+
+//- Report an IO warning using Foam::Warning
+//  for FUNCTION_NAME in file __FILE__ at line __LINE__
+//  for a particular IOstream
+#define IOWarningInFunction(ios) IOWarningIn(FUNCTION_NAME, ios)
+
+
+//- Report a information message using Foam::Info
+//  for functionName in file __FILE__ at line __LINE__
+#define InfoIn(functionName)                                                   \
+    ::Foam::Info((functionName), __FILE__, __LINE__)
+
+//- Report a information message using Foam::Info
+//  for FUNCTION_NAME in file __FILE__ at line __LINE__
+#define InfoInFunction InfoIn(FUNCTION_NAME)
+
+
+//- Report an IO information message using Foam::Info
+//  for functionName in file __FILE__ at line __LINE__
+//  for a particular IOstream
+#define IOInfoIn(functionName, ios)                                            \
+    ::Foam::Info((functionName), __FILE__, __LINE__, (ios))
+
+//- Report an IO information message using Foam::Info
+//  for FUNCTION_NAME in file __FILE__ at line __LINE__
+//  for a particular IOstream
+#define IOInfoInFunction(ios) IOInfoIn(FUNCTION_NAME, ios)
+
+
+//- Report a variable name and value
+//  using Foam::Pout in file __FILE__ at line __LINE__
+#define Debug(var)                                                             \
+    ::Foam::Pout<< "["<< __FILE__ << ":" << __LINE__ << "] "                   \
+    << #var " " << var << ::Foam::endl
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
