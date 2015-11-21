@@ -1,6 +1,6 @@
     if (mesh.nCells() != 1)
     {
-        FatalErrorIn(args.executable())
+        FatalErrorInFunction
             << "Solver only applicable to single cell cases"
             << exit(FatalError);
     }
@@ -86,20 +86,6 @@
 
     #include "createPhi.H"
 
-    Info << "Creating turbulence model.\n" << endl;
-    autoPtr<compressible::turbulenceModel> turbulence
-    (
-        compressible::turbulenceModel::New
-        (
-            rho,
-            U,
-            phi,
-            thermo
-        )
-    );
-
     OFstream post(args.path()/"chemFoam.out");
     post<< "# Time" << token::TAB << "Temperature [K]" << token::TAB
         << "Pressure [Pa]" << endl;
-
-
