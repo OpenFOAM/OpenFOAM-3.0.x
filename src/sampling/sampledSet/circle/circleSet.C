@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -76,7 +76,7 @@ void Foam::circleSet::calcSamples
     }
     else
     {
-        WarningIn(funcName)
+        WarningInFunction
             << "Unable to find cell at point id " << 0
             << " at location " << startPoint_ << endl;
     }
@@ -92,7 +92,7 @@ void Foam::circleSet::calcSamples
 
     if (mag(axis1 & circleAxis_) > SMALL)
     {
-        WarningIn(funcName)
+        WarningInFunction
             << "Vector defined by (startPoint - origin) not orthogonal to "
             << "circleAxis:" << nl
             << "    startPoint - origin = " << axis1 << nl
@@ -118,13 +118,16 @@ void Foam::circleSet::calcSamples
             samplingCells.append(cellI);
             samplingFaces.append(-1);
             samplingSegments.append(nPoint);
-            samplingCurveDist.append(mag(pt - startPoint_));
+            samplingCurveDist.append
+            (
+                radius*constant::mathematical::pi/180.0*theta
+            );
 
             nPoint++;
         }
         else
         {
-            WarningIn(funcName)
+            WarningInFunction
                 << "Unable to find cell at point id " << nPoint
                 << " at location " << pt << endl;
         }
