@@ -31,7 +31,7 @@ inline Foam::label Foam::CV2D::insertPoint
     const label type
 )
 {
-    uint nVert = number_of_vertices();
+    unsigned int nVert = number_of_vertices();
 
     return insertPoint(toPoint(p), nVert, type);
 }
@@ -55,13 +55,13 @@ inline Foam::label Foam::CV2D::insertPoint
     const label type
 )
 {
-    uint nVert = number_of_vertices();
+    unsigned int nVert = number_of_vertices();
 
     Vertex_handle vh = insert(p);
 
     if (nVert == number_of_vertices())
     {
-        WarningIn("Foam::CV2D::insertPoint")
+        WarningInFunction
             << "Failed to insert point " << toPoint2D(p) << endl;
     }
     else
