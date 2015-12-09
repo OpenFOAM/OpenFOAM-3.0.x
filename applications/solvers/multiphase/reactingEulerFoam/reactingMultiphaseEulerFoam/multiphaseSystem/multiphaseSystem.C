@@ -71,6 +71,8 @@ void Foam::multiphaseSystem::calcAlphas()
 
 void Foam::multiphaseSystem::solveAlphas()
 {
+    bool LTS = fv::localEulerDdt::enabled(mesh_);
+
     PtrList<surfaceScalarField> alphaPhiCorrs(phases().size());
     forAll(phases(), phasei)
     {
@@ -155,14 +157,11 @@ void Foam::multiphaseSystem::solveAlphas()
             }
         }
 
-        if (fv::localEulerDdt::enabled(mesh_))
+        if (LTS)
         {
-            const volScalarField& rDeltaT =
-                fv::localEulerDdt::localRDeltaT(mesh_);
-
             MULES::limit
             (
-                rDeltaT,
+                fv::localEulerDdt::localRDeltaT(mesh_),
                 geometricOneField(),
                 phase,
                 phi_,
@@ -400,12 +399,8 @@ void Foam::multiphaseSystem::correctContactAngle
 
             if (tp == acap.thetaProps().end())
             {
-                FatalErrorIn
-                (
-                    "multiphaseSystem::correctContactAngle"
-                    "(const phaseModel& phase1, const phaseModel& phase2, "
-                    "fvPatchVectorFieldField& nHatb) const"
-                )   << "Cannot find interface "
+                FatalErrorInFunction
+                    << "Cannot find interface "
                     << phasePairKey(phase1.name(), phase2.name())
                     << "\n    in table of theta properties for patch "
                     << acap.patch().name()
@@ -639,8 +634,6 @@ void Foam::multiphaseSystem::solve()
             trSubDeltaT =
                 fv::localEulerDdt::localRSubDeltaT(mesh_, nAlphaSubCycles);
         }
-
-        dimensionedScalar totalDeltaT = runTime.deltaT();
 
         PtrList<volScalarField> alpha0s(phases().size());
         PtrList<surfaceScalarField> alphaPhiSums(phases().size());
