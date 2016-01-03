@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2012 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -44,7 +44,6 @@ defineTypeNameAndDebug(cellCuts, 0);
 
 // * * * * * * * * * * * * * Private Static Functions  * * * * * * * * * * * //
 
-// Find val in first nElems elements of list.
 Foam::label Foam::cellCuts::findPartIndex
 (
     const labelList& elems,
@@ -96,7 +95,6 @@ Foam::scalarField Foam::cellCuts::expand
 }
 
 
-// Find first point in lst not in map.
 Foam::label Foam::cellCuts::firstUnique
 (
     const labelList& lst,
@@ -116,7 +114,6 @@ Foam::label Foam::cellCuts::firstUnique
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-// Write cell and raw cuts on any of the elements
 void Foam::cellCuts::writeUncutOBJ
 (
     const fileName& dir,
@@ -223,7 +220,6 @@ void Foam::cellCuts::writeOBJ
 }
 
 
-// Find face on cell using the two edges.
 Foam::label Foam::cellCuts::edgeEdgeToFace
 (
     const label cellI,
@@ -268,7 +264,6 @@ Foam::label Foam::cellCuts::edgeEdgeToFace
 }
 
 
-// Find face on cell using an edge and a vertex.
 Foam::label Foam::cellCuts::edgeVertexToFace
 (
     const label cellI,
@@ -312,7 +307,6 @@ Foam::label Foam::cellCuts::edgeVertexToFace
 }
 
 
-// Find face using two vertices (guaranteed not to be along edge)
 Foam::label Foam::cellCuts::vertexVertexToFace
 (
     const label cellI,
@@ -485,7 +479,6 @@ void Foam::cellCuts::calcFaceCuts() const
 }
 
 
-// Find edge on face using two vertices
 Foam::label Foam::cellCuts::findEdge
 (
     const label faceI,
@@ -515,7 +508,6 @@ Foam::label Foam::cellCuts::findEdge
 }
 
 
-// Check if there is a face on the cell on which all cuts are.
 Foam::label Foam::cellCuts::loopFace
 (
     const label cellI,
@@ -567,7 +559,6 @@ Foam::label Foam::cellCuts::loopFace
 }
 
 
-// From point go into connected face
 bool Foam::cellCuts::walkPoint
 (
     const label cellI,
@@ -623,7 +614,6 @@ bool Foam::cellCuts::walkPoint
 }
 
 
-// Cross cut (which is edge on faceI) onto next face
 bool Foam::cellCuts::crossEdge
 (
     const label cellI,
@@ -703,8 +693,6 @@ bool Foam::cellCuts::addCut
 }
 
 
-// Walk across faceI, storing cuts as you go. Returns last two cuts visisted.
-// Returns true if valid walk.
 bool Foam::cellCuts::walkFace
 (
     const label cellI,
@@ -795,8 +783,6 @@ bool Foam::cellCuts::walkFace
 
 
 
-// Walk across cuts (cut edges or cut vertices) of cell. Stops when hit cut
-// already visited. Returns true when loop of 3 or more vertices found.
 bool Foam::cellCuts::walkCell
 (
     const label cellI,
@@ -990,13 +976,14 @@ bool Foam::cellCuts::walkCell
 }
 
 
-// Determine for every cut cell the loop (= face) it is cut by. Done by starting
-// from a cut edge or cut vertex and walking across faces, from cut to cut,
-// until starting cut hit.
-// If multiple loops are possible across a cell circumference takes the first
-// one found.
 void Foam::cellCuts::calcCellLoops(const labelList& cutCells)
 {
+    // Determine for every cut cell the loop (= face) it is cut by. Done by
+    // starting from a cut edge or cut vertex and walking across faces, from
+    // cut to cut, until starting cut hit.
+    // If multiple loops are possible across a cell circumference takes the
+    // first one found.
+
     // Calculate cuts per face.
     const labelListList& allFaceCuts = faceCuts();
 
@@ -1147,8 +1134,6 @@ void Foam::cellCuts::calcCellLoops(const labelList& cutCells)
 }
 
 
-// Walk unset edges of single cell from starting point and marks visited
-// edges and vertices with status.
 void Foam::cellCuts::walkEdges
 (
     const label cellI,
@@ -1186,7 +1171,6 @@ void Foam::cellCuts::walkEdges
 }
 
 
-// Invert anchor point selection.
 Foam::labelList Foam::cellCuts::nonAnchorPoints
 (
     const labelList& cellPoints,
@@ -1217,7 +1201,6 @@ Foam::labelList Foam::cellCuts::nonAnchorPoints
 }
 
 
-//- Check anchor points on 'outside' of loop
 bool Foam::cellCuts::loopAnchorConsistent
 (
     const label cellI,
@@ -1253,10 +1236,6 @@ bool Foam::cellCuts::loopAnchorConsistent
 }
 
 
-// Determines set of anchor points given a loop. The loop should split the
-// cell into (one or) two sets of vertices. The set of vertices that is
-// on the 'normal' side of the loop is the anchor set.
-// Returns true if valid set, false otherwise.
 bool Foam::cellCuts::calcAnchors
 (
     const label cellI,
@@ -1620,7 +1599,6 @@ Foam::pointField Foam::cellCuts::loopPoints
 }
 
 
-// Returns weights of loop. Inverse of loopPoints.
 Foam::scalarField Foam::cellCuts::loopWeights(const labelList& loop) const
 {
     scalarField weights(loop.size());
@@ -1644,7 +1622,6 @@ Foam::scalarField Foam::cellCuts::loopWeights(const labelList& loop) const
 }
 
 
-// Check if cut edges in loop are compatible with ones in edgeIsCut_
 bool Foam::cellCuts::validEdgeLoop
 (
     const labelList& loop,
@@ -1680,15 +1657,16 @@ bool Foam::cellCuts::validEdgeLoop
 }
 
 
-// Counts cuts on face. Includes cuts through vertices and through edges.
-// Assumes that if edge is cut both in edgeIsCut and in loop that the position
-// of the cut is the same.
 Foam::label Foam::cellCuts::countFaceCuts
 (
     const label faceI,
     const labelList& loop
 ) const
 {
+    // Includes cuts through vertices and through edges.
+    // Assumes that if edge is cut both in edgeIsCut and in loop that the
+    // position of the cut is the same.
+
     label nCuts = 0;
 
     // Count cut vertices
@@ -1731,8 +1709,6 @@ Foam::label Foam::cellCuts::countFaceCuts
 }
 
 
-// Determine compatibility of loop with existing cut pattern. Does not use
-// cut-addressing (faceCuts_, cutCuts_)
 bool Foam::cellCuts::conservativeValidLoop
 (
     const label cellI,
@@ -1824,10 +1800,6 @@ bool Foam::cellCuts::conservativeValidLoop
 }
 
 
-// Determine compatibility of loop with existing cut pattern. Does not use
-// derived cut-addressing (faceCuts), only pointIsCut, edgeIsCut.
-// Adds any cross-cuts found to newFaceSplitCut and sets cell points on
-// one side of the loop in anchorPoints.
 bool Foam::cellCuts::validLoop
 (
     const label cellI,
@@ -1838,6 +1810,11 @@ bool Foam::cellCuts::validLoop
     labelList& anchorPoints
 ) const
 {
+    // Determine compatibility of loop with existing cut pattern. Does not use
+    // derived cut-addressing (faceCuts), only pointIsCut, edgeIsCut.
+    // Adds any cross-cuts found to newFaceSplitCut and sets cell points on
+    // one side of the loop in anchorPoints.
+
     if (loop.size() < 2)
     {
         return false;
@@ -1849,6 +1826,7 @@ bool Foam::cellCuts::validLoop
         // cut per face is allowed.
         if (!conservativeValidLoop(cellI, loop))
         {
+            Info << "Invalid conservative loop: " << loop << endl;
             return  false;
         }
     }
@@ -1992,9 +1970,6 @@ bool Foam::cellCuts::validLoop
 }
 
 
-// Update basic cut information (pointIsCut, edgeIsCut) from cellLoops.
-// Assumes cellLoops_ and edgeWeight_ already set and consistent.
-// Does not use any other information.
 void Foam::cellCuts::setFromCellLoops()
 {
     // 'Uncut' edges/vertices that are not used in loops.
@@ -2081,8 +2056,6 @@ void Foam::cellCuts::setFromCellLoops()
 }
 
 
-// Upate basic cut information from single cellLoop. Returns true if loop
-// was valid.
 bool Foam::cellCuts::setFromCellLoop
 (
     const label cellI,
@@ -2090,6 +2063,9 @@ bool Foam::cellCuts::setFromCellLoop
     const scalarField& loopWeights
 )
 {
+    // Update basic cut information from single cellLoop. Returns true if loop
+    // was valid.
+
     // Dump loop for debugging.
     if (debug)
     {
@@ -2179,8 +2155,6 @@ bool Foam::cellCuts::setFromCellLoop
 }
 
 
-// Update basic cut information from cellLoops. Checks for consistency with
-// existing cut pattern.
 void Foam::cellCuts::setFromCellLoops
 (
     const labelList& cellLabels,
@@ -2217,8 +2191,6 @@ void Foam::cellCuts::setFromCellLoops
 }
 
 
-// Cut cells and update basic cut information from cellLoops. Checks each loop
-// for consistency with existing cut pattern.
 void Foam::cellCuts::setFromCellCutter
 (
     const cellLooper& cellCutter,
@@ -2275,6 +2247,17 @@ void Foam::cellCuts::setFromCellCutter
             else
             {
                 cellLoops_[cellI].setSize(0);
+
+                WarningIn("Foam::cellCuts::setFromCellCutter")
+                    << "Found loop on cell " << cellI
+                    << " that resulted in an unexpected bad cut."
+                    << "    Suggestions:" << nl
+                    << "      - Turn on the debug switch for 'cellCuts' to get"
+                    << " geometry files that identify this cell." << nl
+                    << "      - Also keep in mind to check the defined"
+                    << " reference directions, as these are most likely the"
+                    << " origin of the problem."
+                    << nl << endl;
 
                 // Discarded by validLoop
                 if (debug)
@@ -2334,7 +2317,6 @@ void Foam::cellCuts::setFromCellCutter
 }
 
 
-// Same as one before but cut plane prescribed (instead of just normal)
 void Foam::cellCuts::setFromCellCutter
 (
     const cellLooper& cellCutter,
@@ -2446,7 +2428,6 @@ void Foam::cellCuts::setFromCellCutter
 }
 
 
-// Set orientation of loops
 void Foam::cellCuts::orientPlanesAndLoops()
 {
     // Determine anchorPoints if not yet done by validLoop.
@@ -2503,7 +2484,6 @@ void Foam::cellCuts::orientPlanesAndLoops()
 }
 
 
-// Do all: calculate addressing, calculate loops splitting cells
 void Foam::cellCuts::calcLoopsAndAddressing(const labelList& cutCells)
 {
     // Sanity check on weights
@@ -2696,7 +2676,6 @@ void Foam::cellCuts::check() const
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-// Construct from cells to cut and pattern of cuts
 Foam::cellCuts::cellCuts
 (
     const polyMesh& mesh,
@@ -2741,8 +2720,6 @@ Foam::cellCuts::cellCuts
 }
 
 
-// Construct from pattern of cuts. Finds out itself which cells are cut.
-// (can go wrong if e.g. all neighbours of cell are refined)
 Foam::cellCuts::cellCuts
 (
     const polyMesh& mesh,
@@ -2761,6 +2738,9 @@ Foam::cellCuts::cellCuts
     nLoops_(-1),
     cellAnchorPoints_(mesh.nCells())
 {
+    // Construct from pattern of cuts. Finds out itself which cells are cut.
+    // (can go wrong if e.g. all neighbours of cell are refined)
+
     if (debug)
     {
         Pout<< "cellCuts : constructor from cellLoops" << endl;
@@ -2785,8 +2765,6 @@ Foam::cellCuts::cellCuts
 }
 
 
-// Construct from complete cellLoops. Assumes correct cut pattern.
-// Only constructs cut-cut addressing and cellAnchorPoints
 Foam::cellCuts::cellCuts
 (
     const polyMesh& mesh,
@@ -2831,7 +2809,6 @@ Foam::cellCuts::cellCuts
 }
 
 
-// Construct from list of cells to cut and cell cutter.
 Foam::cellCuts::cellCuts
 (
     const polyMesh& mesh,
@@ -2875,7 +2852,6 @@ Foam::cellCuts::cellCuts
 }
 
 
-// Construct from list of cells to cut, plane to cut with and cell cutter.
 Foam::cellCuts::cellCuts
 (
     const polyMesh& mesh,
@@ -2922,7 +2898,6 @@ Foam::cellCuts::cellCuts
 }
 
 
-// Construct from components
 Foam::cellCuts::cellCuts
 (
     const polyMesh& mesh,
@@ -2994,7 +2969,6 @@ Foam::pointField Foam::cellCuts::loopPoints(const label cellI) const
 }
 
 
-// Flip loop for cell
 void Foam::cellCuts::flip(const label cellI)
 {
     labelList& loop = cellLoops_[cellI];
@@ -3012,7 +2986,6 @@ void Foam::cellCuts::flip(const label cellI)
 }
 
 
-// Flip loop only
 void Foam::cellCuts::flipLoopOnly(const label cellI)
 {
     labelList& loop = cellLoops_[cellI];
