@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -80,7 +80,7 @@ label nValuesForPatchFaces = 0;
 // Dummy yywrap to keep yylex happy at compile time.
 // It is called by yylex but is not used as the mechanism to change file.
 // See <<EOF>>
-#if YY_FLEX_SUBMINOR_VERSION < 34
+#if YY_FLEX_MINOR_VERSION < 6 && YY_FLEX_SUBMINOR_VERSION < 34
 extern "C" int yywrap()
 #else
 int yyFlexLexer::yywrap()
@@ -425,7 +425,7 @@ mtype                 {space}"MTYPE:"{space}
 
         if (curGroupID > 0)
         {
-            FatalErrorIn("gambitToFoam::main")
+            FatalErrorInFunction
                 << "<readCellStreamGroupID>{space}{label} : "
                 << "trying to reset group ID while active"
                 << abort(FatalError);
@@ -582,7 +582,7 @@ mtype                 {space}"MTYPE:"{space}
 <boundaryPatchFaces>{spaceNl}{label}({scalarList}|\n) {
 
         // Vertex-based boundary condition
-        FatalErrorIn("gambitToFoam::main")
+        FatalErrorInFunction
             << "<boundaryPatchFaces>{spaceNl}{label}{scalarList} : "
             << "boundary condition specified on vertices not supported"
             << abort(FatalError);
@@ -648,7 +648,7 @@ int main(int argc, char *argv[])
 
     if (!gambitStream)
     {
-        FatalErrorIn("gambitToFoam::main")
+        FatalErrorInFunction
             << args.executable()
             << ": file " << gambitFile << " not found"
             << abort(FatalError);

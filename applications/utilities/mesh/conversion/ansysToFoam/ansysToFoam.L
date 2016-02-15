@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -77,7 +77,7 @@ label currentTypei = -1;
 // Dummy yywrap to keep yylex happy at compile time.
 // It is called by yylex but is not used as the mechanism to change file.
 // See <<EOF>>
-#if YY_FLEX_SUBMINOR_VERSION < 34
+#if YY_FLEX_MINOR_VERSION < 6 && YY_FLEX_SUBMINOR_VERSION < 34
 extern "C" int yywrap()
 #else
 int yyFlexLexer::yywrap()
@@ -285,7 +285,7 @@ label findFace(const polyMesh& mesh, const face& f)
         }
     }
 
-    FatalErrorIn("findFace(const polyMesh&, const face&)")
+    FatalErrorInFunction
         << "Cannot find a face matching " << f
         << exit(FatalError);
 
@@ -320,7 +320,7 @@ int main(int argc, char *argv[])
 
     if (!ansysStream)
     {
-        FatalErrorIn("ansysToFoam::main(int argc, char *argv[])")
+        FatalErrorInFunction
             << args.executable()
             << ": file " << ansysFile << " not found"
             << exit(FatalError);
