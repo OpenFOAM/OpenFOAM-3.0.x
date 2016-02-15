@@ -31,6 +31,12 @@ solvers
         mergeLevels     1;
     }
 
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
     U
     {
         solver          smoothSolver;
@@ -42,8 +48,8 @@ solvers
 
 PISO
 {
-    nCorrectors     4;
-    nNonOrthogonalCorrectors 2;
+    nCorrectors     5;
+    nNonOrthogonalCorrectors 0;
 }
 
 
