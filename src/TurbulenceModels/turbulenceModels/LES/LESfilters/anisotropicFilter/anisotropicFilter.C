@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -129,6 +129,8 @@ Foam::tmp<Foam::volScalarField> Foam::anisotropicFilter::operator()
     const tmp<volScalarField>& unFilteredField
 ) const
 {
+    correctBoundaryConditions(unFilteredField);
+
     tmp<volScalarField> tmpFilteredField =
         unFilteredField
       + (
@@ -151,6 +153,8 @@ Foam::tmp<Foam::volVectorField> Foam::anisotropicFilter::operator()
     const tmp<volVectorField>& unFilteredField
 ) const
 {
+    correctBoundaryConditions(unFilteredField);
+
     tmp<volVectorField> tmpFilteredField =
         unFilteredField
       + (
@@ -173,6 +177,8 @@ Foam::tmp<Foam::volSymmTensorField> Foam::anisotropicFilter::operator()
     const tmp<volSymmTensorField>& unFilteredField
 ) const
 {
+    correctBoundaryConditions(unFilteredField);
+
     tmp<volSymmTensorField> tmpFilteredField
     (
         new volSymmTensorField
@@ -207,6 +213,8 @@ Foam::tmp<Foam::volTensorField> Foam::anisotropicFilter::operator()
     const tmp<volTensorField>& unFilteredField
 ) const
 {
+    correctBoundaryConditions(unFilteredField);
+
     tmp<volTensorField> tmpFilteredField
     (
         new volTensorField
