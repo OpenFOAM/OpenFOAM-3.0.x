@@ -2,7 +2,7 @@
 # =========                 |
 # \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
 #  \\    /   O peration     |
-#   \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+#   \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
 #    \\/     M anipulation  |
 #------------------------------------------------------------------------------
 # License
@@ -32,52 +32,27 @@
 
 # Change compiled version aliases
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-alias wmSET='. $WM_PROJECT_DIR/etc/bashrc'
-alias wm64='wmSET WM_ARCH_OPTION=64'
-alias wm32='wmSET WM_ARCH_OPTION=32'
-alias wmSP='wmSET WM_PRECISION_OPTION=SP'
-alias wmDP='wmSET WM_PRECISION_OPTION=DP'
+alias wmSet='. $WM_PROJECT_DIR/etc/bashrc'
+alias wm64='wmSet WM_ARCH_OPTION=64'
+alias wm32='wmSet WM_ARCH_OPTION=32'
+alias wmSP='wmSet WM_PRECISION_OPTION=SP'
+alias wmDP='wmSet WM_PRECISION_OPTION=DP'
 
-# refresh the environment
-alias wmREFRESH='wmSET $FOAM_SETTINGS'
+# Refresh the environment
+alias wmRefresh='wmSet $FOAM_SETTINGS'
 
-# clear env
-alias wmUNSET='. $WM_PROJECT_DIR/etc/config/unset.sh'
+# Clear env
+alias wmUnset='. $WM_PROJECT_DIR/etc/config/unset.sh'
 
 # Toggle wmakeScheduler on/off
 #  - also need to set WM_HOSTS
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-alias wmSchedON='export WM_SCHEDULER=$WM_PROJECT_DIR/wmake/wmakeScheduler'
-alias wmSchedOFF='unset WM_SCHEDULER'
-
-# Change ParaView version
-# ~~~~~~~~~~~~~~~~~~~~~~~
-unset foamPV
-foamPV()
-{
-    . $WM_PROJECT_DIR/etc/config/paraview.sh ParaView_VERSION=$1
-    echo "paraview-$ParaView_VERSION  (major: $ParaView_MAJOR)" 1>&2
-}
-
+alias wmSchedOn='export WM_SCHEDULER=$WM_PROJECT_DIR/wmake/wmakeScheduler'
+alias wmSchedOff='unset WM_SCHEDULER'
 
 # Change directory aliases
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-alias src='cd $FOAM_SRC'
-alias lib='cd $FOAM_LIBBIN'
-alias run='cd $FOAM_RUN'
 alias foam='cd $WM_PROJECT_DIR'
-alias foamsrc='cd $FOAM_SRC/$WM_PROJECT'
-alias foamfv='cd $FOAM_SRC/finiteVolume'
-alias app='cd $FOAM_APP'
-alias util='cd $FOAM_UTILITIES'
-alias sol='cd $FOAM_SOLVERS'
-alias tut='cd $FOAM_TUTORIALS'
-
-alias foamApps='cd $FOAM_APP'
-alias foamSol='cd $FOAM_SOLVERS'
-alias foamTuts='cd $FOAM_TUTORIALS'
-alias foamUtils='cd $FOAM_UTILITIES'
-alias foam3rdParty='cd $WM_THIRD_PARTY_DIR'
 
 if [ -n "$WM_PROJECT_SITE" ]
 then
@@ -86,4 +61,40 @@ else
     alias foamSite='cd $WM_PROJECT_INST_DIR/site'
 fi
 
-# -----------------------------------------------------------------------------
+alias src='cd $FOAM_SRC'
+alias lib='cd $FOAM_LIBBIN'
+alias app='cd $FOAM_APP'
+alias sol='cd $FOAM_SOLVERS'
+alias util='cd $FOAM_UTILITIES'
+alias tut='cd $FOAM_TUTORIALS'
+alias run='cd $FOAM_RUN'
+
+
+# Change OpenFOAM version
+# ~~~~~~~~~~~~~~~~~~~~~~~
+unset foamVersion
+foamVersion()
+{
+    if [ "$1" ]; then
+        foamInstDir=$FOAM_INST_DIR
+        wmUnset
+        . $foamInstDir/OpenFOAM-$1/etc/bashrc
+        foam
+        echo "Changed to OpenFOAM-$1" 1>&2
+    else
+        echo "OpenFOAM-$WM_PROJECT_VERSION" 1>&2
+    fi
+}
+
+
+# Change ParaView version
+# ~~~~~~~~~~~~~~~~~~~~~~~
+unset foamPV
+foamPV()
+{
+    . $WM_PROJECT_DIR/etc/config.sh/paraview ParaView_VERSION=$1
+    echo "paraview-$ParaView_VERSION  (major: $ParaView_MAJOR)" 1>&2
+}
+
+
+#------------------------------------------------------------------------------

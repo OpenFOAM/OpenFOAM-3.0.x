@@ -2,7 +2,7 @@
 # =========                 |
 # \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
 #  \\    /   O peration     |
-#   \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+#   \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
 #    \\/     M anipulation  |
 #------------------------------------------------------------------------------
 # License
@@ -37,39 +37,29 @@ if ( $?WM_PROJECT_DIR ) then
     if ( ! -f "$foamClean" || ! -x "$foamClean" ) unset foamClean
 endif
 
-set foamOldDirs=""
-
-# The old dirs to be cleaned from the various environment variables
-# - remove anything under top-level directory.
-# NB: the WM_PROJECT_INST_DIR might not be identical between versions
-#
-if ( $?WM_PROJECT_INST_DIR ) then
-    set foamOldDirs="$WM_PROJECT_INST_DIR"
-endif
-
-if ( $?WM_PROJECT ) then
-    set foamOldDirs="$HOME/$WM_PROJECT/$LOGNAME $foamOldDirs"
-endif
-
-if ( $?WM_PROJECT_SITE ) then
-    set foamOldDirs="$WM_PROJECT_SITE $foamOldDirs"
-endif
+# The old dirs to be cleaned from the environment variables
+set foamOldDirs="$WM_PROJECT_DIR $WM_THIRD_PARTY_DIR \
+    $HOME/$WM_PROJECT/$LOGNAME $WM_PROJECT_SITE \
+    $FOAM_SITE_APPBIN $FOAM_SITE_LIBBIN $ParaView_DIR"
 
 
 #------------------------------------------------------------------------------
-# unset WM_* environment variables
+# Unset WM_* environment variables
 
 unsetenv WM_ARCH
 unsetenv WM_ARCH_OPTION
 unsetenv WM_CC
 unsetenv WM_CFLAGS
 unsetenv WM_COMPILER
+unsetenv WM_COMPILER_TYPE
 unsetenv WM_COMPILER_LIB_ARCH
 unsetenv WM_COMPILE_OPTION
 unsetenv WM_CXX
 unsetenv WM_CXXFLAGS
 unsetenv WM_DIR
 unsetenv WM_HOSTS
+unsetenv WM_LABEL_OPTION
+unsetenv WM_LABEL_SIZE
 unsetenv WM_LDFLAGS
 unsetenv WM_LINK_LANGUAGE
 unsetenv WM_MPLIB
@@ -88,7 +78,7 @@ unsetenv WM_THIRD_PARTY_DIR
 
 
 #------------------------------------------------------------------------------
-# unset FOAM_* environment variables
+# Unset FOAM_* environment variables
 
 unsetenv FOAM_APPBIN
 unsetenv FOAM_APP
@@ -113,24 +103,33 @@ unsetenv FOAM_UTILITIES
 
 
 #------------------------------------------------------------------------------
-# unset MPI-related environment variables
+# Unset MPI-related environment variables
 
 unsetenv MPI_ARCH_PATH
 unsetenv MPI_BUFFER_SIZE
 unsetenv OPAL_PREFIX
 
+
 #------------------------------------------------------------------------------
-# unset Ensight/ParaView-related environment variables
+# Unset Ensight/ParaView-related environment variables
 
 unsetenv ENSIGHT9_READER
 unsetenv CMAKE_HOME
 unsetenv ParaView_DIR
 unsetenv ParaView_INCLUDE_DIR
+unsetenv ParaView_MAJOR
+unsetenv ParaView_VERSION
 unsetenv PV_PLUGIN_PATH
 
 
 #------------------------------------------------------------------------------
-# cleanup environment
+# Unset CGAL-related environment variables
+
+unsetenv CGAL_ARCH_PATH
+
+
+#------------------------------------------------------------------------------
+# Cleanup environment
 # PATH, LD_LIBRARY_PATH, MANPATH
 
 if ( $?foamClean ) then
@@ -158,37 +157,32 @@ endif
 unset cleaned foamClean foamOldDirs
 
 #------------------------------------------------------------------------------
-# cleanup aliases
+# Cleanup aliases
 
-unalias wmSET
+unalias wmSet
 unalias wm64
 unalias wm32
 unalias wmSP
 unalias wmDP
 
-unalias wmUNSET
+unalias wmUnset
 
-unalias wmSchedON
-unalias wmSchedOFF
-unalias foamPV
+unalias wmSchedOn
+unalias wmSchedOff
+
+unalias foam
+unalias foamSite
 
 unalias src
 unalias lib
-unalias run
-unalias foam
-unalias foamsrc
-unalias foamfv
 unalias app
-unalias util
 unalias sol
+unalias util
 unalias tut
+unalias run
 
-unalias foamApps
-unalias foamSol
-unalias foamTuts
-unalias foamUtils
-unalias foam3rdParty
-unalias foamSite
+unalias foamVersion
+unalias foamPV
 
 
-# ----------------------------------------------------------------- end-of-file
+#------------------------------------------------------------------------------
